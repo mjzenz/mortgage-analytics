@@ -1,8 +1,9 @@
 library(stringr)
+library(rmarkdown)
 ###########
 
 
-BaseAddPrincipal <- 1000
+BaseAddPrincipal <- 3000
 AddPrincipal <- 0
 #OrigPrincipal <- AddPrincipal #Only use if Principal will increase by year
 OrigLoanAmount <- 189000.00
@@ -30,7 +31,7 @@ AddPrincipal <- NA
 #########
 
 
-MortgagePaymentHistory <- read.csv("/media/mike/UNTITLED/Secure/MortgagePaymentHistory.csv", 
+MortgagePaymentHistory <- read.csv("MortgagePaymentHistory.csv", 
                                    stringsAsFactors=FALSE)
 
 if(length(MortgagePaymentHistory$PayNum) > 0){
@@ -101,11 +102,12 @@ AmortSchedule$PrincipalReduction <- AmortSchedule$Principal + AmortSchedule$AddP
 AmortSchedule[PayNum,]$Date_Month
 AmortSchedule[PayNum,]$Date_Year
 
-AmortSchedule$Date <- as.Date(paste("20", Date_Year, "-",  str_pad(Date_Month, width = 2, side = c("left"), pad = "0"),"-01", sep = ""))
-AmortSchedule$Date < as.Date()- 
+AmortSchedule$Date <- as.Date(paste("20",AmortSchedule$Date_Year, "-",  str_pad(AmortSchedule$Date_Month, width = 2, side = c("left"), pad = "0"),"-01", sep = ""))
 
-  
-  
-  
+AmortSchedule$Type <-"Projected"
+AmortSchedule[which(AmortSchedule$Actual),]$Type <- "Actual"
+
+
+rmarkdown::render("AmortScheduleReport.Rmd") 
   
 #write.csv(AmortSchedule, file = "AmortSchedule.csv")

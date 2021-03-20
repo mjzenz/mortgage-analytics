@@ -1,0 +1,18 @@
+---
+title: "Mortgage Progress Report"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+```
+
+
+```{r pay-off-pace , echo=FALSE, warning=FALSE}
+plot <- ggplot(AmortSchedule, aes(x = Date, y = Balance))
+plot + geom_line(aes(linetype = Type), color = "black") +
+geom_line(aes(y = PresentValue_CumInterest), color = "red") +
+labs(y = "Balance", title = "Remaining Mortgage Balance")
+
+```
